@@ -37,6 +37,12 @@ You have to prepare the hosts for docker block storage, but basically just follo
 
 <https://docs.openshift.com/container-platform/3.6/install_config/install/host_preparation.html>
 
+This includes subscribing the system i.e. `subscription-manager repos \
+    --enable="rhel-7-server-rpms" \
+    --enable="rhel-7-server-extras-rpms" \
+    --enable="rhel-7-server-ose-3.6-rpms" \
+    --enable="rhel-7-fast-datapath-rpms"`
+
 ## Ansible Hosts File
 
 From your ansible node (which in this case can be master.vm.example.com), make sure you install the package `atomic-openshift-utils` which will include the required openshift-ansible playbooks. They will be located in `/usr/share/ansible/openshift-ansible/`
