@@ -1,6 +1,6 @@
-# oats87.github.io
+# Welcome to my site!
 
-Welcome to my github.io page. I've listed some of the accessible documents below.
+Welcome to my website/github.io page. I've listed some of the accessible documents below.
 
 So far I've been trying to document how to deploy OpenShift Container Platform on a single VM host on a restricted network, the most recent document (and more thorough one by far is the OCP36_MiniCluster one)
 
