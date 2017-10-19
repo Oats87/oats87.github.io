@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "UPDATED: All-in-One OpenShift Container Platform 3.6 Architecture"
+date:   2017-10-19 11:11:01 -0400
+categories: openshift ocp
+---
 # OpenShift Container Platform 3.6 Mini Cluster (for learning purposes only)
 
 By Chris Kim (chris.kim@redhat.com) - Last Updated Oct 17, 2017, v1.0

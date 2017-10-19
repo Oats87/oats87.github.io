@@ -1,4 +1,12 @@
+---
+layout: post
+title:  "Mini OpenShift Notes!"
+date:   2017-10-19 11:11:01 -0400
+categories: openshift ocp
+---
 # OCP Test on Virtualization
+
+## THESE ARE NOT THE LATEST MINI OPENSHIFT NOTES!
 
 ## Setting Up OCP 3.5/3.6 on a single hosted virtualized environment
 
