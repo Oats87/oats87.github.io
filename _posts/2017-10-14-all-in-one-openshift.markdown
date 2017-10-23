@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Mini OpenShift Notes!"
-date:   2017-10-19 11:11:01 -0400
+date:   2017-10-14 11:11:01 -0400
 categories: openshift ocp
 ---
 # OCP Test on Virtualization

@@ -164,6 +164,21 @@ options {
                 8.8.4.4;
         };
 };
+
+zone "example.com" {
+	type master;
+	file "example.com.hosts";
+};
+
+zone "cloudapps.example.com" {
+	type master;
+	file "cloudapps.example.com.hosts";
+};
+
+zone "vm.example.com" {
+	type master;
+	file "vm.example.com.hosts";
+};
 ```
 
 #### /var/named/example.com.hosts
