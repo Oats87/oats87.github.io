@@ -64,6 +64,8 @@ etcd
 nodes
 
 [OSEv3:vars]
+ansible_ssh_user=root
+
 openshift_deployment_type=openshift-enterprise
 openshift_release=v3.6
 
