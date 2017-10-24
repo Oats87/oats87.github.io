@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "UPDATED: All-in-One OpenShift Container Platform 3.6 Architecture"
+title:  "All-in-One OpenShift Container Platform 3.6 Architecture"
 date:   2017-10-19 11:11:01 -0400
 categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6 Mini Cluster (for learning purposes only)
 
-By Chris Kim (chris.kim@redhat.com) - Last Updated Oct 17, 2017, v1.0
+By Chris Kim (chris.kim@redhat.com) - Last Updated Oct 23, 2017, v1.3
 
 NOTE: This is a WORK IN PROGRESS! I cannot guarantee that anything I say in here will work out of box for you! This is simply documenting my steps to create a semi-contained OpenShift infrastructure to familiarize yourself with deploying OpenShift.
 
@@ -78,12 +78,10 @@ openshift_master_cluster_method=native
 openshift_master_cluster_hostname=dashboard.example.com
 openshift_master_cluster_public_hostname=dashboard.example.com
 
-openshift_disable_check=memory_availability,disk_availability
+openshift_disable_check=memory_availability,disk_availability,docker_storage
 
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 openshift_master_htpasswd_users={'admin': '$apr1$6CZ4noKr$IksMFMgsW5e5FL0ioBhkk/', 'developer': '$apr1$AvisAPTG$xrVnJ/J0a83hAYlZcxHVf1'}
-
-[OSEv3:vars]
 
 [masters]
 master.vm.example.com
@@ -96,6 +94,12 @@ master.vm.example.com openshift_node_labels="{'region': 'master'}"
 infranode.vm.example.com openshift_node_labels="{'region': 'infra'}"
 appnode.vm.example.com openshift_node_labels="{'region': 'primary'}"
 ```
+
+## Running Health Checks
+
+If you wish to run health checks before your install (and given you didn't disable all of them using the `openshift_disable_check` variable), you can invoke a manual run of just the health checks by running:
+
+`ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-checks/health.yml`
 
 ## DNS Information for OpenShift Mini Cluster
 
