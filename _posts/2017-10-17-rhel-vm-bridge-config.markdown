@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "RHEL 7 Virtual Machine (libvirt) Bridge Configuration"
-date:   2017-10-19 20:32:01 -0400
+date:   2017-10-17 20:32:01 -0400
 categories: rhel vm
 ---
 # Configuring a RHEL 7 Machine to bridge eth0 to allow the host to access the VM's running on it
@@ -18,7 +18,7 @@ This should be done if you have a single interface going into your machine (or o
 
 * NetworkManager
 * Know the name of your network interface
-* Set a static IP for your interface, I'm pretty sure you can set your interface to DHCP as well but I haven't done this yet. 
+* Set a static IP for your interface, I'm pretty sure you can set your interface to DHCP as well but I haven't done this yet.
 
 ## How?
 

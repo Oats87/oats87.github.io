@@ -47,4 +47,3 @@ w # Write changes to disk
 After this, you may get a message if the flash drive was already mounted. In this case, you should run
 
 `sudo partprobe /dev/sdb`
-

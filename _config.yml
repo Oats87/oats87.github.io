@@ -13,20 +13,29 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: www.chrishkim.com - Chris Kim (Oats87)
+title: Chris Kim
+header-img: img/metcalf1900x600.png
 email: me@chrishkim.com
+copyright_name: Chris Kim
 description: >- # this means to ignore newlines until "baseurl:"
   Welcome to my corner of the internet!
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: 
+url: "http://www.chrishkim.com" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username:
 github_username:  oats87
+email_username: me@chrishkim.com
 
 # Build settings
 markdown: kramdown
-theme: minima
+highlighter: rouge
+permalink: pretty
+paginate: 5
+exclude: ["less", "node_modules", "Gruntfile.js", "package.json", "README.md"]
+
+#theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-paginate
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
