@@ -133,8 +133,8 @@ osm_cluster_network_cidr=10.128.0.0/14
 openshift_master_cluster_method=native
 
 # Set the cluster hostname and public cluster hostname
-openshift_master_cluster_hostname=dashboard.example.com
-openshift_master_cluster_public_hostname=dashboard.example.com
+openshift_master_cluster_hostname=openshift.example.com
+openshift_master_cluster_public_hostname=openshift.example.com
 
 # Set the default wildcard DNS, so your applications will be created at
 # docker-registry-console-default.cloudapps.example.com for example
@@ -147,6 +147,9 @@ openshift_disable_check=memory_availability
 # The default credentials will be {admin:adm-password} and {developer:devel-password}
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
 openshift_master_htpasswd_users={'admin': '$apr1$6CZ4noKr$IksMFMgsW5e5FL0ioBhkk/', 'developer': '$apr1$AvisAPTG$xrVnJ/J0a83hAYlZcxHVf1'}
+
+# Ansible will set the insecure registry parameter in each node to this if you set this, it should be what is contained in the openshift_portal_net variable
+openshift_docker_insecure_registries="172.30.0.0/16"
 
 [masters]
 master.vm.example.com
