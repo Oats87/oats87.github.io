@@ -16,6 +16,30 @@ Note that these instructions can pretty easily be adapted to install Origin, but
 
 Please try to understand what you're putting in the files I provide below! If you just copy and paste you won't learn anything!
 
+## Known Issues:
+
+### ElasticSearch Master Deployment Not Ready
+
+When you deploy openshift-logging currently, we are experiencing a bit of an issue where the ElasticSearch master's are running an older image version that doesn't support the latest readiness checks/discovery algorithm. This requires you to revert back, hence you should disable the readiness probe (`oc edit dc logging-es-data-master-...` and remove the section that has `readinessProbe:`) and revert back to the master discovery algorithm (`oc edit cm logging-elasticsearch` to change:
+
+```
+cloud:
+   kubernetes:
+     pod_label: ${POD_LABEL}
+     pod_port: 9300
+     namespace: ${NAMESPACE} 
+```
+to
+```
+cloud:
+   kubernetes:
+     service: ${SERVICE_DNS}
+     namespace: ${NAMESPACE}
+```
+
+Please keep in mind white space when you're performing this fix, as YAML is very sensitive to it.
+
+Thank you to [@wozniakjan](https://github.com/wozniakjan) for this solution found [here](https://github.com/openshift/openshift-ansible/issues/5497#issuecomment-331372471)
 ## High Level Steps
 
 To configure a miniature openshift cluster, you'll have to do a few things. You'll need to configure a DNS forwarder (BIND in this example), configure an NFS server, prepare the OpenShift nodes, and run the install. If everything goes according to plan you should be able to deploy a mini OpenShift cluster within 3 hours of starting this document.
@@ -184,12 +208,6 @@ pipelining=True
 Once you've configured your Ansible Hosts file, you'll probably want to make sure Ansible can actually log in and touch all of your nodes. To do this, you should simply run the Ansible ping ad-hoc command: `ansible nodes -m ping` You'll want to see all green. If you see red, correct the issue and try the command again.
 
 You will most likely run into Ansible asking if you want to trust the host, in this case, just keep typing `y` and hitting Enter until you are returned to the prompt. Once you are returned to the prompt, you can run ping again and it should not complain anymore.
-
-## Running Health Checks
-
-If you wish to run health checks before your install (and given you didn't disable all of them using the `openshift_disable_check` variable), you can invoke a manual run of just the health checks by running:
-
-`ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-checks/health.yml`
 
 ## DNS Information for OpenShift Mini Cluster
 
@@ -381,8 +399,18 @@ openshift_hosted_logging_storage_volume_name=logging
 openshift_hosted_logging_storage_volume_size=10Gi
 ```
 
-## Running ANSIBLE!!
+## Running Ansible
 
 Once you've done these things, and you can run `ansible nodes -m ping` and get no red, you're ready to run the install!
 
 `ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml`
+
+After the install completes, provided you don't have any issues with deployment, you should be able to access your cluster at
+
+[https://openshift.example.com](https://openshift.example.com) if you set your machine DNS to the DNS of your internal DNS server (that is overriding your DNS setup)
+
+## Running Health Checks
+
+If you wish to run health checks after your install (and given you didn't disable all of them using the `openshift_disable_check` variable), you can invoke a manual run of just the health checks by running:
+
+`ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-checks/health.yml`
