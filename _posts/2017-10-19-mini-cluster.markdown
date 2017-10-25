@@ -40,6 +40,59 @@ cloud:
 Please keep in mind white space when you're performing this fix, as YAML is very sensitive to it.
 
 Thank you to [@wozniakjan](https://github.com/wozniakjan) for this solution found [here](https://github.com/openshift/openshift-ansible/issues/5497#issuecomment-331372471)
+
+### FluentD Misconfigured Config Map
+
+FluentD currently has the wrong config map with it, which is causing issues with 3.6 logging deployment. If you look at the logs of the FluentD containers, you will see `journal.system` warnings. To resolve this, you must edit the configmap (`oc edit configmap/logging-fluentd`) from
+
+```
+   <label @INGRESS>
+   ## filters
+     @include configs.d/openshift/filter-pre-*.conf
+     @include configs.d/openshift/filter-retag-journal.conf
+     @include configs.d/openshift/filter-k8s-meta.conf
+     @include configs.d/openshift/filter-kibana-transform.conf
+     @include configs.d/openshift/filter-k8s-flatten-hash.conf
+     @include configs.d/openshift/filter-k8s-record-transform.conf
+     @include configs.d/openshift/filter-syslog-record-transform.conf
+     @include configs.d/openshift/filter-viaq-data-model.conf
+     @include configs.d/openshift/filter-post-*.conf
+   ##
+   </label>
+   <label @OUTPUT>
+   ## matches
+     @include configs.d/openshift/output-pre-*.conf
+     @include configs.d/openshift/output-operations.conf
+     @include configs.d/openshift/output-applications.conf
+     # no post - applications.conf matches everything left
+   ##
+   </label>
+```
+to
+```
+   <label @INGRESS>
+   ## filters
+     @include configs.d/openshift/filter-pre-*.conf
+     @include configs.d/openshift/filter-retag-journal.conf
+     @include configs.d/openshift/filter-k8s-meta.conf
+     @include configs.d/openshift/filter-kibana-transform.conf
+     @include configs.d/openshift/filter-k8s-flatten-hash.conf
+     @include configs.d/openshift/filter-k8s-record-transform.conf
+     @include configs.d/openshift/filter-syslog-record-transform.conf
+     @include configs.d/openshift/filter-viaq-data-model.conf
+     @include configs.d/openshift/filter-post-*.conf
+   ##
+   ## matches
+     @include configs.d/openshift/output-pre-*.conf
+     @include configs.d/openshift/output-operations.conf
+     @include configs.d/openshift/output-applications.conf
+     # no post - applications.conf matches everything left
+   ##
+   </label>
+```
+
+Thank you to Louis Santillan for providing the solution for this issue! 
+
 ## High Level Steps
 
 To configure a miniature openshift cluster, you'll have to do a few things. You'll need to configure a DNS forwarder (BIND in this example), configure an NFS server, prepare the OpenShift nodes, and run the install. If everything goes according to plan you should be able to deploy a mini OpenShift cluster within 3 hours of starting this document.
