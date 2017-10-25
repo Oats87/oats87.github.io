@@ -91,7 +91,7 @@ to
    </label>
 ```
 
-Thank you to Louis Santillan for providing the solution for this issue! 
+Thank you to [https://github.com/lpsantil](Louis Santillan) for providing the solution for this issue! 
 
 ## High Level Steps
 
