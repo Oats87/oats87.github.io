@@ -24,7 +24,7 @@ url: "http://www.chrishkim.com" # the base hostname & protocol for your site, e.
 twitter_username:
 github_username:  oats87
 email_username: me@chrishkim.com
-
+google_tracking_id: UA-109047921-1
 # Build settings
 markdown: kramdown
 highlighter: rouge
