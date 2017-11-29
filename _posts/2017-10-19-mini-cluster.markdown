@@ -6,7 +6,7 @@ categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6 Mini Cluster (for learning purposes only)
 
-By Chris Kim (chris.kim@redhat.com) - Last Updated Oct 24, 2017, v1.4
+By Chris Kim (chris.kim@redhat.com) - Last Updated Nov 29, 2017, v1.5
 
 NOTE: This is a WORK IN PROGRESS! I cannot guarantee that anything I say in here will work out of box for you! This is simply documenting my steps to create a semi-contained OpenShift infrastructure to familiarize yourself with deploying OpenShift.
 
@@ -316,8 +316,8 @@ options {
         */
         recursion yes;
 
-        dnssec-enable yes;
-        dnssec-validation yes;
+        dnssec-enable no;
+        dnssec-validation no;
 
         /* Path to ISC DLV key */
         bindkeys-file "/etc/named.iscdlv.key";
