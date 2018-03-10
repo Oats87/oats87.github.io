@@ -6,11 +6,11 @@ categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6 Mini Cluster (for learning purposes only)
 
-By Chris Kim (chris.kim@redhat.com) - Last Updated Nov 29, 2017, v1.5
+By Chris Kim (chris.kim@redhat.com) - Last Updated Mar 9, 2018, v1.6
 
 NOTE: This is a WORK IN PROGRESS! I cannot guarantee that anything I say in here will work out of box for you! This is simply documenting my steps to create a semi-contained OpenShift infrastructure to familiarize yourself with deploying OpenShift.
 
-If you have any questions feel free to e-mail me at [chris.kim@redhat.com](mailto:chris.kim@redhat.com)
+If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com) or officially at Red Hat via [chris.kim@redhat.com](mailto:chris.kim@redhat.com)
 
 Note that these instructions can pretty easily be adapted to install Origin, but are written for installing OCP on registered RHEL boxes.
 
@@ -18,80 +18,6 @@ Please try to understand what you're putting in the files I provide below! If yo
 
 ## Known Issues:
 
-### ElasticSearch Master Deployment Not Ready
-
-When you deploy openshift-logging currently, we are experiencing a bit of an issue where the ElasticSearch master's are running an older image version that doesn't support the latest readiness checks/discovery algorithm. This requires you to revert back, hence you should disable the readiness probe (`oc edit dc logging-es-data-master-...` and remove the section that has `readinessProbe:`) and revert back to the master discovery algorithm (`oc edit cm logging-elasticsearch` to change:
-
-```
-cloud:
-   kubernetes:
-     pod_label: ${POD_LABEL}
-     pod_port: 9300
-     namespace: ${NAMESPACE} 
-```
-to
-```
-cloud:
-   kubernetes:
-     service: ${SERVICE_DNS}
-     namespace: ${NAMESPACE}
-```
-
-Please keep in mind white space when you're performing this fix, as YAML is very sensitive to it.
-
-Thank you to [@wozniakjan](https://github.com/wozniakjan) for this solution found [here](https://github.com/openshift/openshift-ansible/issues/5497#issuecomment-331372471)
-
-### FluentD Misconfigured Config Map
-
-FluentD currently has the wrong config map with it, which is causing issues with 3.6 logging deployment. If you look at the logs of the FluentD containers, you will see `journal.system` warnings. To resolve this, you must edit the configmap (`oc edit configmap/logging-fluentd`) from
-
-```
-   <label @INGRESS>
-   ## filters
-     @include configs.d/openshift/filter-pre-*.conf
-     @include configs.d/openshift/filter-retag-journal.conf
-     @include configs.d/openshift/filter-k8s-meta.conf
-     @include configs.d/openshift/filter-kibana-transform.conf
-     @include configs.d/openshift/filter-k8s-flatten-hash.conf
-     @include configs.d/openshift/filter-k8s-record-transform.conf
-     @include configs.d/openshift/filter-syslog-record-transform.conf
-     @include configs.d/openshift/filter-viaq-data-model.conf
-     @include configs.d/openshift/filter-post-*.conf
-   ##
-   </label>
-   <label @OUTPUT>
-   ## matches
-     @include configs.d/openshift/output-pre-*.conf
-     @include configs.d/openshift/output-operations.conf
-     @include configs.d/openshift/output-applications.conf
-     # no post - applications.conf matches everything left
-   ##
-   </label>
-```
-to
-```
-   <label @INGRESS>
-   ## filters
-     @include configs.d/openshift/filter-pre-*.conf
-     @include configs.d/openshift/filter-retag-journal.conf
-     @include configs.d/openshift/filter-k8s-meta.conf
-     @include configs.d/openshift/filter-kibana-transform.conf
-     @include configs.d/openshift/filter-k8s-flatten-hash.conf
-     @include configs.d/openshift/filter-k8s-record-transform.conf
-     @include configs.d/openshift/filter-syslog-record-transform.conf
-     @include configs.d/openshift/filter-viaq-data-model.conf
-     @include configs.d/openshift/filter-post-*.conf
-   ##
-   ## matches
-     @include configs.d/openshift/output-pre-*.conf
-     @include configs.d/openshift/output-operations.conf
-     @include configs.d/openshift/output-applications.conf
-     # no post - applications.conf matches everything left
-   ##
-   </label>
-```
-
-Thank you to [Louis Santillan](https://github.com/lpsantil) for providing the solution for this issue! 
 
 ## High Level Steps
 
@@ -467,3 +393,88 @@ After the install completes, provided you don't have any issues with deployment,
 If you wish to run health checks after your install (and given you didn't disable all of them using the `openshift_disable_check` variable), you can invoke a manual run of just the health checks by running:
 
 `ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-checks/health.yml`
+
+# No Longer Relevant Known Issues
+
+### ElasticSearch Master Deployment Not Ready
+
+#### UPDATE
+
+This has been fixed by the latest Z-Stream in OpenShift 3.6. You should no longer encounter this issue.
+
+When you deploy openshift-logging currently, we are experiencing a bit of an issue where the ElasticSearch master's are running an older image version that doesn't support the latest readiness checks/discovery algorithm. This requires you to revert back, hence you should disable the readiness probe (`oc edit dc logging-es-data-master-...` and remove the section that has `readinessProbe:`) and revert back to the master discovery algorithm (`oc edit cm logging-elasticsearch` to change:
+
+```
+cloud:
+   kubernetes:
+     pod_label: ${POD_LABEL}
+     pod_port: 9300
+     namespace: ${NAMESPACE} 
+```
+to
+```
+cloud:
+   kubernetes:
+     service: ${SERVICE_DNS}
+     namespace: ${NAMESPACE}
+```
+
+Please keep in mind white space when you're performing this fix, as YAML is very sensitive to it.
+
+Thank you to [@wozniakjan](https://github.com/wozniakjan) for this solution found [here](https://github.com/openshift/openshift-ansible/issues/5497#issuecomment-331372471)
+
+### FluentD Misconfigured Config Map
+
+#### UPDATE
+
+This has been fixed by the latest version of OpenShift 3.6. You should no longer run into this issue, and you should also revert your ConfigMap back to the original format, so you perform proper tagging and labelling of logs within the EFK stack (which also helps to reduce clutter and load)
+
+FluentD currently has the wrong config map with it, which is causing issues with 3.6 logging deployment. If you look at the logs of the FluentD containers, you will see `journal.system` warnings. To resolve this, you must edit the configmap (`oc edit configmap/logging-fluentd`) from
+
+```
+   <label @INGRESS>
+   ## filters
+     @include configs.d/openshift/filter-pre-*.conf
+     @include configs.d/openshift/filter-retag-journal.conf
+     @include configs.d/openshift/filter-k8s-meta.conf
+     @include configs.d/openshift/filter-kibana-transform.conf
+     @include configs.d/openshift/filter-k8s-flatten-hash.conf
+     @include configs.d/openshift/filter-k8s-record-transform.conf
+     @include configs.d/openshift/filter-syslog-record-transform.conf
+     @include configs.d/openshift/filter-viaq-data-model.conf
+     @include configs.d/openshift/filter-post-*.conf
+   ##
+   </label>
+   <label @OUTPUT>
+   ## matches
+     @include configs.d/openshift/output-pre-*.conf
+     @include configs.d/openshift/output-operations.conf
+     @include configs.d/openshift/output-applications.conf
+     # no post - applications.conf matches everything left
+   ##
+   </label>
+```
+to
+```
+   <label @INGRESS>
+   ## filters
+     @include configs.d/openshift/filter-pre-*.conf
+     @include configs.d/openshift/filter-retag-journal.conf
+     @include configs.d/openshift/filter-k8s-meta.conf
+     @include configs.d/openshift/filter-kibana-transform.conf
+     @include configs.d/openshift/filter-k8s-flatten-hash.conf
+     @include configs.d/openshift/filter-k8s-record-transform.conf
+     @include configs.d/openshift/filter-syslog-record-transform.conf
+     @include configs.d/openshift/filter-viaq-data-model.conf
+     @include configs.d/openshift/filter-post-*.conf
+   ##
+   ## matches
+     @include configs.d/openshift/output-pre-*.conf
+     @include configs.d/openshift/output-operations.conf
+     @include configs.d/openshift/output-applications.conf
+     # no post - applications.conf matches everything left
+   ##
+   </label>
+```
+
+Thank you to [Louis Santillan](https://github.com/lpsantil) for providing the solution for this issue! 
