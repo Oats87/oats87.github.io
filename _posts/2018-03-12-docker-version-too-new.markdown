@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "OpenShift Container Platform 3.6/3.7 Installation/Upgrade Failure due to docker-1.13.1 existence"
+title:  "OpenShift Container Platform 3.6/3.7 Installation/Upgrade Failure due to docker 1.13.1 existence"
 date:   2018-03-12 09:33:00 -0800
 categories: openshift ocp
 ---
@@ -26,4 +26,4 @@ openshift_disable_check=package_version
 
 to your Ansible Hosts File, under your conventional `[OSEv3:vars]` section.
 
-The long-term fix relates work with Red Hat Engineers and QE; bugs have been opened about this issue (https://bugzilla.redhat.com/show_bug.cgi?id=1551862) and a pull request has already been created to fix this (https://github.com/openshift/openshift-ansible/pull/7347). I would expect this to be out within the next 2 Z-Streams.
+The long-term fix relates work with Red Hat Engineers and QE; bugs have been opened about this issue [BZ 1551862](https://bugzilla.redhat.com/show_bug.cgi?id=1551862) and a pull request has already been created to fix this [PR 7347](https://github.com/openshift/openshift-ansible/pull/7347). I would expect this to be out within the next 2 Z-Streams.
