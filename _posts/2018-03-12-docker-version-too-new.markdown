@@ -6,9 +6,9 @@ categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6/3.7 Installation/Upgrade Failure due to docker-1.13.1 existence
 
-By Chris Kim (chris.kim@redhat.com)
+By Chris Kim (me@chrishkim.com)
 
-If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com) or officially at Red Hat via [chris.kim@redhat.com](mailto:chris.kim@redhat.com)
+If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com)
 
 ## Introduction
 

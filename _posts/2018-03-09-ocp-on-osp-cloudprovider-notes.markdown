@@ -6,9 +6,9 @@ categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6/3.7 on OpenStack using Cloud Provider on a Flat Network
 
-By Chris Kim (chris.kim@redhat.com) - Last Updated Mar 9, 2018, v1.0
+By Chris Kim (me@chrishkim.com) - Last Updated Mar 9, 2018, v1.0
 
-If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com) or officially at Red Hat via [chris.kim@redhat.com](mailto:chris.kim@redhat.com)
+If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com)
 
 ## Introduction
 

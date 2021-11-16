@@ -6,11 +6,11 @@ categories: openshift ocp
 ---
 # OpenShift Container Platform 3.6 Mini Cluster (for learning purposes only)
 
-By Chris Kim (chris.kim@redhat.com) - Last Updated Mar 9, 2018, v1.6
+By Chris Kim (me@chrishkim.com) - Last Updated Mar 9, 2018, v1.6
 
 NOTE: This is a WORK IN PROGRESS! I cannot guarantee that anything I say in here will work out of box for you! This is simply documenting my steps to create a semi-contained OpenShift infrastructure to familiarize yourself with deploying OpenShift.
 
-If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com) or officially at Red Hat via [chris.kim@redhat.com](mailto:chris.kim@redhat.com)
+If you have any questions feel free to e-mail me at [me@chrishkim.com](mailto:me@chrishkim.com)
 
 Note that these instructions can pretty easily be adapted to install Origin, but are written for installing OCP on registered RHEL boxes.
 
